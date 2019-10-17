@@ -19,6 +19,7 @@ int main(int argc, char *argv[])
 	//Flags to check for open/close comments
 	bool isPrevOpen = false;
 	bool isPrevClose = false;
+	bool isComplete = false;
 
 	//Opens file from argument in READ mode, fp points to file
 	fp = fopen(argv[1], "r");
@@ -34,9 +35,9 @@ int main(int argc, char *argv[])
 		printf("%c", ch);	
 	
 		//If ch matches any brace, or beginning of open comment, close comment
-		if (ch == '(') || (ch == ')') || (ch == '{') || (ch == '}') ||
+		if ((ch == '(') || (ch == ')') || (ch == '{') || (ch == '}') ||
 			(ch == '[') || (ch == ']') || (ch == '"') || (ch == '\'') ||
-			(ch == '/') || (ch == '*')
+			(ch == '/') || (ch == '*'))
 		{
 			//If previous char was beginning of open comment, check current completes
 			if (isPrevOpen)
@@ -44,8 +45,9 @@ int main(int argc, char *argv[])
 				if (ch == '*')
 					{
 						//do push 
+						printf("Pushing open comment to stack");
+						isComplete = true;
 					}
-				isPrevOpen = false;
 			}
 			//If previous char was beginning of close comment, check current completes
 			if (isPrevClose)
@@ -53,15 +55,19 @@ int main(int argc, char *argv[])
 				if (ch == '/')
 					{
 						//do push 
+						printf("Pushing close comment to stack");
+						isComplete = true;
 					}
-				isPrevClose = false;
 			}
 
-			if (ch == '/')
+			if ((ch == '/') && (isComplete == false))
 				isPrevOpen = true;
 		
-			if (ch == '*')
+			if ((ch == '*') && (isComplete == false))
 				isPrevClose = true;
+			
+			if (isComplete == true)
+				isPrevOpen, isPrevClose = false;
 		}
 	}
 	
