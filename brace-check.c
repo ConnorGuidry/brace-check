@@ -11,7 +11,7 @@ int main(int argc, char *argv[])
 	{
 		printf("Error opening selected file.\n");
 		return 1;
-	{
+	}
 
 	while ((ch = getc(fp)) != EOF)
 	{
