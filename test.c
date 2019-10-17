@@ -1,3 +1,5 @@
+/* This is a test comment
+*/
 #include <stdio.h>
 
 int main()
@@ -8,7 +10,7 @@ int main()
    lower = 0;
    upper = 300;
    step = 20;
-   
+ /* Here is another test comment */  
    fahr = lower;
    printf("Fahrenheit to Celsius Table\n");
    while (fahr <= upper) {

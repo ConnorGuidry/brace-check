@@ -45,8 +45,9 @@ int main(int argc, char *argv[])
 				if (ch == '*')
 					{
 						//do push 
-						printf("Pushing open comment to stack");
+						printf("\nPushing open comment to stack\n");
 						isComplete = true;
+						isPrevOpen = false;
 					}
 			}
 			//If previous char was beginning of close comment, check current completes
@@ -55,19 +56,38 @@ int main(int argc, char *argv[])
 				if (ch == '/')
 					{
 						//do push 
-						printf("Pushing close comment to stack");
+						printf("\nPushing close comment to stack\n");
 						isComplete = true;
+						isPrevClose = false;
 					}
 			}
 
-			if ((ch == '/') && (isComplete == false))
+			//If char is component of comment and previous was not
+			if ((ch == '/') && (isPrevOpen == false) && (isComplete == false))
 				isPrevOpen = true;
 		
-			if ((ch == '*') && (isComplete == false))
+			//If char is component of comment and previous was not
+			if ((ch == '*') && (isPrevClose == false) && (isComplete == false))
 				isPrevClose = true;
 			
+			//If current char is not comment brace component, flags to false
+			if ((ch != '*') && (ch != '/'))
+				isPrevClose, isPrevOpen = false;			
+			
+			//If char is not end of open comment and prev was, reset flag
+			if ((ch != '*') && (isPrevOpen == true))
+				isPrevOpen == false;
+
+			//If char is not end of close comment and prev was, reset flag
+			if ((ch != '/') && (isPrevClose == true))
+				isPrevClose == false;
+
+			//If push completed, set flags to false
 			if (isComplete == true)
+			{
 				isPrevOpen, isPrevClose = false;
+				isComplete = false;
+			}
 		}
 	}
 	
