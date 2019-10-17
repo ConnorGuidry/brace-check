@@ -18,6 +18,64 @@ bool isPrevOpen = false;
 bool isPrevClose = false;
 bool isComplete = false;
 
+void toStack(char brace)
+{
+	//peek at stack if not empty
+	//if top char matches $brace, pop top char and discard brace
+}
+
+void checkComment()
+{
+	//If previous char was beginning of open comment, check current completes
+	if (isPrevOpen)
+	{
+		if (ch == '*')
+		{
+			toStack('c');
+			printf("\nPushing open comment to stack\n");
+			isComplete = true;
+			isPrevOpen = false;
+		}
+	}
+	//If previous char was beginning of close comment, check current completes
+	if (isPrevClose)
+	{
+		if (ch == '/')
+		{
+			toStack('c');
+			printf("\nPushing close comment to stack\n");
+			isComplete = true;
+			isPrevClose = false;
+		}
+	}
+
+	//If char is component of comment and previous was not
+	if ((ch == '/') && (isPrevOpen == false) && (isComplete == false))
+		isPrevOpen = true;
+		
+	//If char is component of comment and previous was not
+	if ((ch == '*') && (isPrevClose == false) && (isComplete == false))
+		isPrevClose = true;
+			
+	//If current char is not comment brace component, flags to false
+	if ((ch != '*') && (ch != '/'))
+		isPrevClose, isPrevOpen = false;			
+			
+	//If char is not end of open comment and prev was, reset flag
+	if ((ch != '*') && (isPrevOpen == true))
+		isPrevOpen == false;
+
+	//If char is not end of close comment and prev was, reset flag
+	if ((ch != '/') && (isPrevClose == true))
+		isPrevClose == false;
+
+	//If push completed, set flags to false
+	if (isComplete == true)
+	{
+		isPrevOpen, isPrevClose = false;
+		isComplete = false;
+	}
+}
 
 void populateStack()
 {
@@ -28,62 +86,17 @@ void populateStack()
 	
 		//If ch matches any brace, or beginning of open comment, close comment
 		if ((ch == '(') || (ch == ')') || (ch == '{') || (ch == '}') ||
-			(ch == '[') || (ch == ']') || (ch == '"') || 
-			(ch == '/') || (ch == '*'))
+			(ch == '[') || (ch == ']') || (ch == '"')) 
 		{
-			//If previous char was beginning of open comment, check current completes
-			if (isPrevOpen)
-			{
-				if (ch == '*')
-					{
-						//do push 
-						printf("\nPushing open comment to stack\n");
-						isComplete = true;
-						isPrevOpen = false;
-					}
-			}
-			//If previous char was beginning of close comment, check current completes
-			if (isPrevClose)
-			{
-				if (ch == '/')
-					{
-						//do push 
-						printf("\nPushing close comment to stack\n");
-						isComplete = true;
-						isPrevClose = false;
-					}
-			}
-
-			//If char is component of comment and previous was not
-			if ((ch == '/') && (isPrevOpen == false) && (isComplete == false))
-				isPrevOpen = true;
-		
-			//If char is component of comment and previous was not
-			if ((ch == '*') && (isPrevClose == false) && (isComplete == false))
-				isPrevClose = true;
-			
-			//If current char is not comment brace component, flags to false
-			if ((ch != '*') && (ch != '/'))
-				isPrevClose, isPrevOpen = false;			
-			
-			//If char is not end of open comment and prev was, reset flag
-			if ((ch != '*') && (isPrevOpen == true))
-				isPrevOpen == false;
-
-			//If char is not end of close comment and prev was, reset flag
-			if ((ch != '/') && (isPrevClose == true))
-				isPrevClose == false;
-
-			//If push completed, set flags to false
-			if (isComplete == true)
-			{
-				isPrevOpen, isPrevClose = false;
-				isComplete = false;
-			}
+			toStack(ch);	
 		}
+		
+		if ((ch == '/') || (ch == '*'))
+			checkComment();	
 	}
 
 }
+
 int main(int argc, char *argv[])
 {
 	//Opens file from argument in READ mode, fp points to file
