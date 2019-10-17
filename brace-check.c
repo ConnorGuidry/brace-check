@@ -7,6 +7,7 @@ of all types, including comments. */
 
 #include <stdio.h>
 #include <regex.h>
+#include "stack.h"
 typedef enum { false, true } bool;
 
 //Pointer to a FILE type
