@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
 	
 		//If ch matches any brace, or beginning of open comment, close comment
 		if ((ch == '(') || (ch == ')') || (ch == '{') || (ch == '}') ||
-			(ch == '[') || (ch == ']') || (ch == '"') || (ch == '\'') ||
+			(ch == '[') || (ch == ']') || (ch == '"') || 
 			(ch == '/') || (ch == '*'))
 		{
 			//If previous char was beginning of open comment, check current completes
