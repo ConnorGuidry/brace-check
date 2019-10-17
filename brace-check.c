@@ -10,9 +10,15 @@ of all types, including comments. */
 
 int main(int argc, char *argv[])
 {
+	typedef enum { false, true } bool;
+
 	//Pointer to a FILE type
 	FILE *fp;
 	char ch;
+
+	//Flags to check for open/close comments
+	bool isPrevOpen = false;
+	bool isPrevClose = false;
 
 	//Opens file from argument in READ mode, fp points to file
 	fp = fopen(argv[1], "r");
@@ -26,6 +32,37 @@ int main(int argc, char *argv[])
 	while ((ch = getc(fp)) != EOF)
 	{
 		printf("%c", ch);	
+	
+		//If ch matches any brace, or beginning of open comment, close comment
+		if (ch == '(') || (ch == ')') || (ch == '{') || (ch == '}') ||
+			(ch == '[') || (ch == ']') || (ch == '"') || (ch == '\'') ||
+			(ch == '/') || (ch == '*')
+		{
+			//If previous char was beginning of open comment, check current completes
+			if (isPrevOpen)
+			{
+				if (ch == '*')
+					{
+						//do push 
+					}
+				isPrevOpen = false;
+			}
+			//If previous char was beginning of close comment, check current completes
+			if (isPrevClose)
+			{
+				if (ch == '/')
+					{
+						//do push 
+					}
+				isPrevClose = false;
+			}
+
+			if (ch == '/')
+				isPrevOpen = true;
+		
+			if (ch == '*')
+				isPrevClose = true;
+		}
 	}
 	
 	//Closes file
