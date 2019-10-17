@@ -7,28 +7,20 @@ of all types, including comments. */
 
 #include <stdio.h>
 #include <regex.h>
+typedef enum { false, true } bool;
 
-int main(int argc, char *argv[])
+//Pointer to a FILE type
+FILE *fp;
+char ch;
+
+//Flags to check for open/close comments
+bool isPrevOpen = false;
+bool isPrevClose = false;
+bool isComplete = false;
+
+
+void populateStack()
 {
-	typedef enum { false, true } bool;
-
-	//Pointer to a FILE type
-	FILE *fp;
-	char ch;
-
-	//Flags to check for open/close comments
-	bool isPrevOpen = false;
-	bool isPrevClose = false;
-	bool isComplete = false;
-
-	//Opens file from argument in READ mode, fp points to file
-	fp = fopen(argv[1], "r");
-	if (fp == NULL)
-	{
-		printf("Error opening selected file.\n");
-		return 1;
-	}
-
 	//While current char is not EOF
 	while ((ch = getc(fp)) != EOF)
 	{
@@ -90,7 +82,20 @@ int main(int argc, char *argv[])
 			}
 		}
 	}
-	
+
+}
+int main(int argc, char *argv[])
+{
+	//Opens file from argument in READ mode, fp points to file
+	fp = fopen(argv[1], "r");
+	if (fp == NULL)
+	{
+		printf("Error opening selected file.\n");
+		return 1;
+	}
+
+	populateStack();
+		
 	//Closes file
 	fclose(fp);
 
