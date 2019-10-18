@@ -6,8 +6,7 @@ This program checks a test file for basic C syntax errors with respect to braces
 of all types, including comments. */
 
 #include <stdio.h>
-#include <regex.h>
-#include "stack.h"
+#include "genericstack.h"
 typedef enum { false, true } bool;
 
 //Pointer to a FILE type
@@ -18,6 +17,8 @@ char ch;
 bool isPrevOpen = false;
 bool isPrevClose = false;
 bool isComplete = false;
+
+Stack *charstack = initStack(1, 1);
 
 void toStack(char brace)
 {
