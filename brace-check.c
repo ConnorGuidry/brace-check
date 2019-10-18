@@ -24,6 +24,13 @@ void toStack(char brace)
 {
 	//peek at stack if not empty
 	//if top char matches $brace, pop top char and discard brace
+	char *top = malloc(8);
+	if (charstack->top > -1)
+		stackTop(charstack, top);
+	
+	char *trash = malloc(8);
+	if (brace = *top)
+		pop(charstack, trash);	
 }
 
 void checkComment()
