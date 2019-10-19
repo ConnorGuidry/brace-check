@@ -1,9 +1,11 @@
+/* Coded by Connor Guidry, Oct 2019 */
+
 /* The idea for this program was taken from an exercise in The C Programming
 Language, 2nd ed., by K&R. This is purely for educational purposes and will
 not see serious development beyond the scope of the exercise
 
 This program checks a test file for basic C syntax errors with respect to braces
-of all types, including comments. */
+of all types, including comments. (does not include single quotes) */
 
 #include <stdio.h>
 #include "genericstack.h"
@@ -27,12 +29,10 @@ void toStack(char *brace, Stack *charstack)
 	if (charstack->top > -1)
 		stackTop(charstack, top);
 	
-	/*
 	char *trash = malloc(8);
 	if (*brace == *top)
 		pop(charstack, trash);	
 	else
-	*/
 		push(charstack, brace);
 }
 
@@ -87,7 +87,7 @@ void populateStack(Stack *charstack)
 	//While current char is not EOF
 	while ((ch = getc(fp)) != EOF)
 	{
-		printf("%c", ch);	
+		//printf("%c", ch);	
 	
 		//If ch matches any brace, or beginning of open comment, close comment
 		if ((ch == '(') || (ch == ')') || (ch == '{') || (ch == '}') ||
@@ -152,6 +152,7 @@ int main(int argc, char *argv[])
 
 	populateStack(charstack);
 	
+	/*
 	while (charstack->top > -1)
 	{
 		char character = '\0';
@@ -159,9 +160,16 @@ int main(int argc, char *argv[])
 		pop(charstack, cptr);	
 		printf("%c\n", *cptr);
 	}		
-
+	*/
+	
 	//Closes file
 	fclose(fp);
+	
+	if (charstack->top > -1)
+		printf("Brace syntax error detected in %s! ( (), [], {}, \"\", or /* */ )\n", 
+			argv[1]);
+	else
+		printf("No brace syntax errors detected in %s\n", argv[1]);
 
 	return 0;
 }
