@@ -73,16 +73,6 @@ void checkComment(Stack *charstack)
 	//If char is component of comment and previous was not
 	if ((ch == '*') && (isPrevClose == false) && (isComplete == false))
 		isPrevClose = true;
-			
-	/*			
-	//If char is not end of open comment and prev was, reset flag
-	if ((ch != '*') && (isPrevOpen == true))
-		isPrevOpen == false;
-
-	//If char is not end of close comment and prev was, reset flag
-	if ((ch != '/') && (isPrevClose == true))
-		isPrevClose == false;
-	*/
 
 	//If push completed, set flags to false
 	if (isComplete == true)
@@ -110,6 +100,28 @@ void populateStack(Stack *charstack)
 				char *cptr = &character;
 				toStack(cptr, charstack);
 			}
+			
+			if (( ch == '{') || (ch == '}'))
+			{
+				char character = 'u';
+				char *cptr = &character;
+				toStack(cptr, charstack);
+			}
+
+			if (( ch == '[') || (ch == ']'))
+			{
+				char character = 's';
+				char *cptr = &character;
+				toStack(cptr, charstack);
+			}
+
+			if (ch == '"')
+			{
+				char character = 'd';
+				char *cptr = &character;
+				toStack(cptr, charstack);
+			}
+
 		}
 					
 		if (ch != '*')
