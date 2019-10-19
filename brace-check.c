@@ -19,31 +19,35 @@ bool isPrevClose = false;
 bool isComplete = false;
 
 
-void toStack(char brace)
+void toStack(char *brace, Stack *charstack)
 {
 	//peek at stack if not empty
 	//if top char matches $brace, pop top char and discard brace
-	char *top == malloc(8);
+	char *top = malloc(8);
 	if (charstack->top > -1)
 		stackTop(charstack, top);
 	
-	//NEEDS TO MATCH PARTNER BRACE HERE, NOT SAME BRACE
+	/*
 	char *trash = malloc(8);
-	if (brace == *top)
+	if (*brace == *top)
 		pop(charstack, trash);	
 	else
+	*/
 		push(charstack, brace);
 }
 
-void checkComment()
+void checkComment(Stack *charstack)
 {
+
 	//If previous char was beginning of open comment, check current completes
 	if (isPrevOpen)
 	{
 		if (ch == '*')
 		{
-			toStack('c');
-			printf("\nPushing open comment to stack\n");
+			char character = 'c';
+			char *cptr = &character;
+			toStack(cptr, charstack);
+			//printf("\nPushing open comment to stack\n");
 			isComplete = true;
 			isPrevOpen = false;
 		}
@@ -53,8 +57,10 @@ void checkComment()
 	{
 		if (ch == '/')
 		{
-			toStack('c');
-			printf("\nPushing close comment to stack\n");
+			char character = 'c';
+			char *cptr = &character;
+			toStack(cptr, charstack);
+			//printf("\nPushing close comment to stack\n");
 			isComplete = true;
 			isPrevClose = false;
 		}
@@ -68,10 +74,7 @@ void checkComment()
 	if ((ch == '*') && (isPrevClose == false) && (isComplete == false))
 		isPrevClose = true;
 			
-	//If current char is not comment brace component, flags to false
-	if ((ch != '*') && (ch != '/'))
-		isPrevClose, isPrevOpen = false;			
-			
+	/*			
 	//If char is not end of open comment and prev was, reset flag
 	if ((ch != '*') && (isPrevOpen == true))
 		isPrevOpen == false;
@@ -79,6 +82,7 @@ void checkComment()
 	//If char is not end of close comment and prev was, reset flag
 	if ((ch != '/') && (isPrevClose == true))
 		isPrevClose == false;
+	*/
 
 	//If push completed, set flags to false
 	if (isComplete == true)
@@ -88,7 +92,7 @@ void checkComment()
 	}
 }
 
-void populateStack()
+void populateStack(Stack *charstack)
 {
 	//While current char is not EOF
 	while ((ch = getc(fp)) != EOF)
@@ -99,11 +103,25 @@ void populateStack()
 		if ((ch == '(') || (ch == ')') || (ch == '{') || (ch == '}') ||
 			(ch == '[') || (ch == ']') || (ch == '"')) 
 		{
-			toStack(ch);	
+			if (( ch == '(') || (ch == ')'))
+			{
+
+				char character = 'p';
+				char *cptr = &character;
+				toStack(cptr, charstack);
+			}
 		}
-		
+					
+		if (ch != '*')
+			isPrevOpen = false;
+
+		if (ch != '/')
+			isPrevClose = false;
+
 		if ((ch == '/') || (ch == '*'))
-			checkComment();	
+			checkComment(charstack);	
+		else
+			isPrevOpen, isPrevClose = false;
 	}
 
 }
@@ -120,8 +138,16 @@ int main(int argc, char *argv[])
 		return 1;
 	}
 
-	populateStack();
-		
+	populateStack(charstack);
+	
+	while (charstack->top > -1)
+	{
+		char character = '\0';
+		char *cptr = &character;
+		pop(charstack, cptr);	
+		printf("%c\n", *cptr);
+	}		
+
 	//Closes file
 	fclose(fp);
 

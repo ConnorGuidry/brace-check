@@ -89,25 +89,14 @@ int getMax(Stack *s, void* max, int (*compare)(const void *a, const void *b))
 	return 0;
 }
 
-/* Testing function
 
+/*
 int main(int argc, char *argv[])
 {
 	Stack *charstack = initStack(1, 1);
-	push(charstack, argv[1]);	
-	push(charstack, argv[2]);	
-	push(charstack, argv[3]);	
-	push(charstack, argv[4]);	
-	push(charstack, argv[5]);	
+	char *character = argv[1];
+	push(charstack, character);	
 	char *charresult = malloc(8);
-	pop(charstack, charresult);
-	printf("%c\n", *charresult);
-	pop(charstack, charresult);
-	printf("%c\n", *charresult);
-	pop(charstack, charresult);
-	printf("%c\n", *charresult);
-	pop(charstack, charresult);
-	printf("%c\n", *charresult);
 	pop(charstack, charresult);
 	printf("%c\n", *charresult);
 	return 0;
