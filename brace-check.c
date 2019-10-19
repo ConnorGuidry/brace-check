@@ -18,19 +18,21 @@ bool isPrevOpen = false;
 bool isPrevClose = false;
 bool isComplete = false;
 
-Stack *charstack = initStack(1, 1);
 
 void toStack(char brace)
 {
 	//peek at stack if not empty
 	//if top char matches $brace, pop top char and discard brace
-	char *top = malloc(8);
+	char *top == malloc(8);
 	if (charstack->top > -1)
 		stackTop(charstack, top);
 	
+	//NEEDS TO MATCH PARTNER BRACE HERE, NOT SAME BRACE
 	char *trash = malloc(8);
-	if (brace = *top)
+	if (brace == *top)
 		pop(charstack, trash);	
+	else
+		push(charstack, brace);
 }
 
 void checkComment()
@@ -108,6 +110,8 @@ void populateStack()
 
 int main(int argc, char *argv[])
 {
+	Stack *charstack = initStack(1, 1);
+
 	//Opens file from argument in READ mode, fp points to file
 	fp = fopen(argv[1], "r");
 	if (fp == NULL)
